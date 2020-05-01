@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService
 {
+    public static final String TAKE_ORDER_ERROR = "Order not found or is already taken";
     @Autowired
     DistanceApiRestClient client;
 
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService
     @Override
     public StatusReqResp takeOrder(Integer id, StatusReqResp status) throws ServiceException {
         if (repo.findUpdateStatus(id, status.getStatus(), Status.UNASSIGNED) == 0) {
-            throw new ServiceException("Order not found or is already taken");
+            throw new ServiceException(TAKE_ORDER_ERROR);
         }
         return new StatusReqResp(Status.SUCCESS);
     }

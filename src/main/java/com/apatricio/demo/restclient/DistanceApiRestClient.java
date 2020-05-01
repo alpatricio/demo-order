@@ -20,6 +20,10 @@ import org.springframework.web.client.RestTemplate;
 @PropertySource(factory = YamlPropertySourceFactory.class ,value="classpath:api-config.yml" )
 public class DistanceApiRestClient
 {
+
+    public static final String INVALID_API_INPUT = "Invalid coordinates.";
+    public static final String UNKNOWN_API_ERROR = "Something went wrong with Google Distance Matrix API.";
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -38,7 +42,7 @@ public class DistanceApiRestClient
         String endLong = orderReq.getDestination()[1];
 
         if (!validLat(startLat) || !validLat(endLat) || !validLong(startLong) || !validLong(endLong)) {
-            throw new ServiceException("Invalid coordinates.");
+            throw new ServiceException(INVALID_API_INPUT);
         }
 
         String data = "json?units=metric&origins=" + startLat + "," + startLong + "&destinations=" + endLat + "," + endLong;
@@ -57,7 +61,7 @@ public class DistanceApiRestClient
             Integer dist = Math.round(Float.parseFloat(distance.split(" ")[0]) * 1000);
             return dist;
         }
-        throw new ServiceException("Something went wrong with Google Distance Matrix API.");
+        throw new ServiceException(UNKNOWN_API_ERROR);
     }
 
     private boolean validLat(String latitude) {
@@ -65,7 +69,7 @@ public class DistanceApiRestClient
             Float lat = Float.parseFloat(latitude);
             return (lat <= 90 && lat >= -90);
         } catch (NumberFormatException e) {
-            throw new ServiceException("Invalid coordinates.");
+            throw new ServiceException(INVALID_API_INPUT);
         }
     }
 
@@ -74,7 +78,7 @@ public class DistanceApiRestClient
             Float lon = Float.parseFloat(longitude);
             return (lon <= 180 && lon >= -180);
         } catch (NumberFormatException e) {
-            throw new ServiceException("Invalid coordinates.");
+            throw new ServiceException(INVALID_API_INPUT);
         }
     }
 }

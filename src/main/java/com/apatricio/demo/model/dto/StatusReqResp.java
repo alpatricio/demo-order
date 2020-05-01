@@ -5,6 +5,7 @@ import com.apatricio.demo.model.Status;
 import javax.validation.constraints.NotNull;
 
 public class StatusReqResp {
+
     @NotNull
     Status status;
 
