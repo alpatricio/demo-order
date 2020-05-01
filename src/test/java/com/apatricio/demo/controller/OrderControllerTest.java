@@ -1,10 +1,10 @@
 package com.apatricio.demo.controller;
 
-import com.apatricio.demo.model.OrderEntity;
 import com.apatricio.demo.model.Status;
 import com.apatricio.demo.model.dto.OrderRequest;
 import com.apatricio.demo.model.dto.OrderResponse;
 import com.apatricio.demo.model.dto.StatusReqResp;
+import com.apatricio.demo.model.mongodb.OrderEntity;
 import com.apatricio.demo.service.OrderService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -86,7 +86,7 @@ public class OrderControllerTest {
     void takeOrderShouldReturn200() throws Exception {
         StatusReqResp status = new StatusReqResp();
         status.setStatus(Status.TAKEN);
-        when(service.takeOrder(1,status)).thenReturn(status);
+        when(service.takeOrder("1",status)).thenReturn(status);
 
         MockHttpServletResponse result = mockMvc.perform(patch("/orders/1")
                 .contentType(APPLICATION_JSON_UTF8).content(convertObjectToJsonBytes(status)))
@@ -100,7 +100,7 @@ public class OrderControllerTest {
 
     @Test
     void listOrderShouldCallServiceReturn200() throws Exception {
-        when(service.listOrder(1,1)).thenReturn(Arrays.asList(new OrderResponse(new OrderEntity())));
+        when(service.listOrder(1,1)).thenReturn(Arrays.asList(new OrderResponse(Status.SUCCESS)));
 
         MockHttpServletResponse result = mockMvc.perform(get("/orders")
                 .param("page","1").param("limit","1")
@@ -115,7 +115,7 @@ public class OrderControllerTest {
 
     @Test
     void listOrderShouldCallServiceReturn400() throws Exception {
-        when(service.listOrder(1,1)).thenReturn(Arrays.asList(new OrderResponse(new OrderEntity())));
+        when(service.listOrder(1,1)).thenReturn(Arrays.asList(new OrderResponse(Status.TAKEN)));
 
         MockHttpServletResponse result = mockMvc.perform(get("/orders")
                 .param("limit","-1")

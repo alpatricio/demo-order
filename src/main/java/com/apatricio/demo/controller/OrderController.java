@@ -18,7 +18,7 @@ import java.util.List;
 @Validated
 @RestController
 public class OrderController {
-    
+
     @Autowired
     OrderService orderService;
 
@@ -30,7 +30,7 @@ public class OrderController {
 
     @PatchMapping(path = "/orders/{id}")
     @ResponseBody
-    public ResponseEntity<StatusReqResp> createOrder(@RequestBody StatusReqResp status, @PathVariable("id") Integer id) throws ServiceException {
+    public ResponseEntity<StatusReqResp> createOrder(@RequestBody StatusReqResp status, @PathVariable("id") String id) throws ServiceException {
         return new ResponseEntity<>(orderService.takeOrder(id, status), HttpStatus.OK);
     }
 

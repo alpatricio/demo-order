@@ -1,31 +1,29 @@
 package com.apatricio.demo.model.dto;
 
-import com.apatricio.demo.model.OrderEntity;
+import com.apatricio.demo.model.mongodb.OrderEntity;
 import com.apatricio.demo.model.Status;
 
-public class OrderResponse
-{
-    private Integer id;
+public class OrderResponse {
+    private String id;
     private Integer distance;
     private Status status;
 
-    public OrderResponse(Status status)
-    {
+    public OrderResponse(Status status) {
         this.status = status;
     }
 
-    public OrderResponse(OrderEntity order)
-    {
-        this.id = order.getId();
+    public OrderResponse(OrderEntity order) {
+        if (order.get_id() != null)
+            this.id = String.valueOf(order.get_id());
         this.distance = order.getDistance();
         this.status = order.getStatus();
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,13 +35,11 @@ public class OrderResponse
         this.distance = distance;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status)
-    {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

@@ -10,6 +10,6 @@ import java.util.List;
 public interface OrderService
 {
     OrderResponse placeOrder(OrderRequest req);
-    StatusReqResp takeOrder(Integer id, StatusReqResp status) throws ServiceException;
+    StatusReqResp takeOrder(String id, StatusReqResp status) throws ServiceException;
     List<OrderResponse> listOrder(int page, int limit);
 }
